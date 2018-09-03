@@ -46,9 +46,9 @@ app.get('/todos/:id', (req, res) => {
     .then((todo) => {
         if(!todo) res.status(404).send({error: 'Could not find that ish...'}); 
         else res.send({todo});
-    }).catch(
+    }).catch((err) => {
         res.status(400).send({error: 'Bad shit happened...'})
-    ); 
+    }); 
 });
 
 module.exports = { app };
