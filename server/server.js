@@ -25,20 +25,17 @@ app.post('/todos', (req, res) => {
     });
 });
 
+app.get('/todos', (req, res) => {
+
+    Todo.find({}).then((todos) => {
+        res.send({todos});
+    },(err) => {
+        res.status(400).send(err); 
+    }).catch(err => console.error(err));
+});
+
 module.exports = { app };
 
 app.listen(3000, () => {
     console.log('app started on port 3000...');
 });
-
-
-// var newUser = new User({
-//     email: 'slim@ish.com',
-// });
-
-// newUser.save().then(
-//     (doc) => {
-//         console.log('Saved to do:', doc)
-//     }, (err) => {
-//         console.error(err); 
-//     });
