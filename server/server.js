@@ -39,11 +39,29 @@ app.get('/todos', (req, res) => {
 app.get('/todos/:id', (req, res) => {
 
     let id = req.params.id;
+
     if( !ObjectId.isValid(id) ){
         res.status(404).send({error: 'Could not find that ish...'}); 
     }
 
     Todo.findById(id)
+    .then((todo) => {
+        if(!todo) res.status(404).send({error: 'Could not find that ish...'}); 
+        else res.send({todo});
+    }).catch((err) => {
+        res.status(400).send({error: 'Bad shit happened...'})
+    }); 
+});
+
+app.delete('/todos/:id', (req, res) => {
+
+    let id = req.params.id;
+
+    if( !ObjectId.isValid(id) ){
+        res.status(404).send({error: 'Could not find that ish...'}); 
+    }
+
+    Todo.findByIdAndRemove(id)
     .then((todo) => {
         if(!todo) res.status(404).send({error: 'Could not find that ish...'}); 
         else res.send({todo});
