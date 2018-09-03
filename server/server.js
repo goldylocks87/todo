@@ -22,7 +22,7 @@ app.post('/todos', (req, res) => {
         res.send(doc);
     }, (err) => {
         res.status(400).send(err); 
-    });
+    }).catch(err => console.error(err));
 });
 
 app.get('/todos', (req, res) => {
