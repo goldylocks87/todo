@@ -20,19 +20,21 @@ app.post('/todos', (req, res) => {
         text: req.body.text,
     });
 
-    newTodo.save().then((doc) => {
+    newTodo.save()
+    .then((doc) => {
         res.send(doc);
     }, (err) => {
-        res.status(400).send(err); 
+        res.status(400).send({error: 'Bad shit happened...'})
     }).catch(err => console.error(err));
 });
 
 app.get('/todos', (req, res) => {
 
-    Todo.find({}).then((todos) => {
+    Todo.find({})
+    .then((todos) => {
         res.send({todos});
-    },(err) => {
-        res.status(400).send(err); 
+    }, (err) => {
+        res.status(400).send({error: 'Bad shit happened...'})
     }).catch(err => console.error(err));
 });
 
@@ -41,16 +43,16 @@ app.get('/todos/:id', (req, res) => {
     let id = req.params.id;
 
     if( !ObjectId.isValid(id) ){
-        res.status(404).send({error: 'Could not find that ish...'}); 
+        return res.status(404).send({error: 'Could not find that ish...'}); 
     }
 
     Todo.findById(id)
     .then((todo) => {
         if(!todo) res.status(404).send({error: 'Could not find that ish...'}); 
         else res.send({todo});
-    }).catch((err) => {
+    }, (err) => {
         res.status(400).send({error: 'Bad shit happened...'})
-    }); 
+    }).catch(err => console.error(err)); 
 });
 
 app.delete('/todos/:id', (req, res) => {
@@ -58,16 +60,16 @@ app.delete('/todos/:id', (req, res) => {
     let id = req.params.id;
 
     if( !ObjectId.isValid(id) ){
-        res.status(404).send({error: 'Could not find that ish...'}); 
+        return res.status(404).send({error: 'Could not find that ish...'}); 
     }
 
     Todo.findByIdAndRemove(id)
     .then((todo) => {
         if(!todo) res.status(404).send({error: 'Could not find that ish...'}); 
         else res.send({todo});
-    }).catch((err) => {
+    }, (err) => {
         res.status(400).send({error: 'Bad shit happened...'})
-    }); 
+    }).catch(err => console.error(err)); 
 });
 
 module.exports = { app };
